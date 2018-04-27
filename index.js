@@ -12,6 +12,7 @@ module.exports = {
       this.app.import('vendor/ember-cli-deprecation-canary/main.js');
       this.app.import('vendor/ember-cli-deprecation-canary/deprecation-tracker.js');
 
+      this.app.import('vendor/ember-cli-deprecation-canary/test-adapters/base.js');
       this.app.import('vendor/ember-cli-deprecation-canary/test-adapters/qunit.js');
       this.app.import('vendor/ember-cli-deprecation-canary/test-adapters.js');
 

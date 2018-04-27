@@ -3,18 +3,35 @@
     throw new Error(`Ember CLI Deprecation Canary only works within a browser context`);
   }
 
-  var EmberDebug = window.Ember && window.Ember.Debug;
-  var deprecationWorkflow = window.deprecationWorkflow;
-  var hasWorkflow = !!(deprecationWorkflow && deprecationWorkflow.config && deprecationWorkflow.config.workflow);
+  var utils = {
+    assertEmberDebug() {
+      var hasEmberDebug = !!(window.Ember && window.Ember.Debug);
+      if (hasEmberDebug) { return true; }
 
-  if (!EmberDebug || !hasWorkflow) {
-    throw new Error(`Ember and Ember CLI Deprecation Workflow is required to use Ember CLI Deprecation Canary`);
+      throw new Error(`Ember.Debug is required to use Ember CLI Deprecation Canary`);
+    },
+
+    assertHasDeprecationWorkflow() {
+      var hasWorkflow = !!(window.deprecationWorkflow && window.deprecationWorkflow.config && window.deprecationWorkflow.config.workflow);
+      if (hasWorkflow) { return true; }
+
+      throw new Error(`Ember CLI Deprecation Workflow is required to use Ember CLI Deprecation Canary`);
+    },
+
+    assertHasCanaryLoaded() {
+      var canaryDidLoaded = !!(window.deprecationWorkflow && window.deprecationWorkflow.canary && window.deprecationWorkflow.canary.adapters);
+      if (canaryDidLoaded) { return true; }
+
+      throw new Error('This file must be loaded after main, deprecation tracker, and necessary adapters');
+    }
   }
 
-  if (!window.QUnit) {
-    throw new Error(`Only QUnit is currently supported`);
-  }
+  utils.assertEmberDebug();
+  utils.assertHasDeprecationWorkflow();
 
-  window.deprecationWorkflow.canary = {};
-  window.deprecationWorkflow.canary.adapters = {};
+  window.deprecationWorkflow.canary = {
+    utils: utils,
+    adapters: {},
+    deprecationTracker: null
+  };
 })();
