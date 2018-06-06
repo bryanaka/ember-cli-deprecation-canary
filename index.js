@@ -3,20 +3,18 @@
 module.exports = {
   name: 'ember-cli-deprecation-canary',
 
-  included: function() {
+  treeFor() {
+   if (this._shouldInclude()) {
+     return this._super.treeFor.apply(this, arguments);
+   }
+ },
+
+  _shouldInclude() {
     // the presence of `this.app.tests` shows that we are in one of:
     //
     // * running non-production build
     // * running tests against production
-    if (this.app.tests) {
-      this.app.import('vendor/ember-cli-deprecation-canary/main.js');
-      this.app.import('vendor/ember-cli-deprecation-canary/deprecation-tracker.js');
-
-      this.app.import('vendor/ember-cli-deprecation-canary/test-adapters/base.js');
-      this.app.import('vendor/ember-cli-deprecation-canary/test-adapters/qunit.js');
-      this.app.import('vendor/ember-cli-deprecation-canary/test-adapters.js');
-
-      this.app.import('vendor/ember-cli-deprecation-canary/register-canary.js');
-    }
-  }
+    //
+    return !!this.app.tests;
+  },
 };
