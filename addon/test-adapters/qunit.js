@@ -25,7 +25,6 @@ export default class QUnitAdapter extends BaseAdapter {
     @protected
   */
   registerReporterHook(callback) {
-    // TODO: move to runEnd if possible
-    QUnit.on('suiteEnd', callback);
+    QUnit.on('runEnd', callback);
   }
 }
