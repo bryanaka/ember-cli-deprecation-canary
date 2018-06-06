@@ -1,12 +1,12 @@
 import DeprecationTracker from './deprecation-tracker';
-import adapters from './test-adapters';
+import { QUnitAdapter } from './test-adapters';
 import {
   assertHasDeprecationWorkflow,
   assertEmberDebug
 } from './utils';
 
 const ADAPTER_REGISTRY = {
-  QUNIT: adapters.QUnitAdapter
+  QUNIT: QUnitAdapter
 };
 
 function generateAdapter(adapterName, deprecationTracker) {
@@ -22,7 +22,7 @@ function generateAdapter(adapterName, deprecationTracker) {
   return new Adapter(deprecationTracker);
 }
 
-export default function register() {
+export default function registerDeprecationCanary() {
   assertEmberDebug();
   assertHasDeprecationWorkflow();
 
