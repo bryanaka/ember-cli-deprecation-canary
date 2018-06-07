@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const deprecationPreamble = 'NEW DEPRECATIONS FOUND:';
+const deprecationPostable = 'END DEPRECATIONS';
 
 /**
   @class BaseAdapter
@@ -54,7 +55,7 @@ export default class BaseAdapter {
   */
   formatLog() {
     const stats = this.deprecationTracker.generateDeprecationStats();
-    return deprecationPreamble + JSON.stringify(stats);
+    return deprecationPreamble + JSON.stringify(stats) + deprecationPostable;
   }
 
   /**
