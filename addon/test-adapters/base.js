@@ -13,7 +13,7 @@ export default class BaseAdapter {
   */
   constructor(deprecationTracker) {
     this.deprecationTracker = deprecationTracker;
-    this.assertTestFrameworkExists();
+    this._assertTestFrameworkExists();
   }
 
   /**
@@ -23,15 +23,7 @@ export default class BaseAdapter {
   register() {
     const reportingFn = this._getBoundReportingCallback();
     this.registerReporterHook(reportingFn);
-    this._registerHandler();
-  }
-
-  /**
-    @method assertTestFrameworkExists
-    @protected
-  */
-  assertTestFrameworkExists() {
-    return true;
+    this.registerDeprecationHandler();
   }
 
   /**
@@ -41,6 +33,19 @@ export default class BaseAdapter {
   */
   registerReporterHook(/* callback */) {
     throw new Error('registerReporterHook needs to be implemented');
+  }
+
+  /**
+    @method registerDeprecationHandler
+    @protected
+  */
+  registerDeprecationHandler() {
+    const deprecationTracker = this.deprecationTracker;
+
+    Ember.Debug.registerDeprecationHandler(function collectNewDeprecations(message, options, next) {
+      deprecationTracker.recordDeprecation(message, options);
+      next(message, options);
+    });
   }
 
   /**
@@ -61,16 +66,14 @@ export default class BaseAdapter {
   }
 
   /**
-    @method registerHandler
+    @method _assertTestFrameworkExists
     @private
   */
-  _registerHandler() {
-    const deprecationTracker = this.deprecationTracker;
-
-    Ember.Debug.registerDeprecationHandler(function collectNewDeprecations(message, options, next) {
-      deprecationTracker.recordDeprecation(message, options);
-      next(message, options);
-    });
+  _assertTestFrameworkExists() {
+    if (!this.testFramework) {
+      throw new Error(`#testFramework is a required property and must be defined.`);
+    }
+    return true;
   }
 
   /**

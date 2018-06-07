@@ -78,9 +78,9 @@ export default class DeprecationTracker {
   _recordDeprecationCacheHit(message, options) {
     var key = this._getDeprecationKey(message, options);
 
-    if (hasOwnProperty(this.deprecationCacheHits.id, key)) {
+    if (hasOwnProperty.call(this.deprecationCacheHits.id, key)) {
       this.deprecationCacheHits.id[key] = true;
-    } else if (hasOwnProperty(this.deprecationCacheHits.message, key)) {
+    } else if (hasOwnProperty.call(this.deprecationCacheHits.message, key)) {
       this.deprecationCacheHits.message[key] = true;
     }
   }

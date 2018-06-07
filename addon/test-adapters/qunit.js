@@ -6,16 +6,13 @@ import BaseAdapter from './base';
   @protected
 */
 export default class QUnitAdapter extends BaseAdapter {
+
   /**
-    @method assertTestFrameworkExists
-    @override
+    @property testFramework
     @protected
   */
-  assertTestFrameworkExists() {
-    if (!QUnit) {
-      throw new Error('QUnit was not found and is required');
-    }
-    return true;
+  get testFramework() {
+    return QUnit;
   }
 
   /**
@@ -25,6 +22,8 @@ export default class QUnitAdapter extends BaseAdapter {
     @protected
   */
   registerReporterHook(callback) {
-    QUnit.on('runEnd', callback);
+    // TODO: we really want runEnd but doesn't work properly because testem
+    // doesn't wait until the runEnd callbacks to be run
+    QUnit.on('suiteEnd', callback);
   }
 }
