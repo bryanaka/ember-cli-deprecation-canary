@@ -80,12 +80,8 @@ export default class DeprecationTracker {
 
     if (hasOwnProperty(this.deprecationCacheHits.id, key)) {
       this.deprecationCacheHits.id[key] = true;
-
     } else if (hasOwnProperty(this.deprecationCacheHits.message, key)) {
       this.deprecationCacheHits.message[key] = true;
-
-    } else {
-      throw new Error('Tried to record a cache hit for a deprecation ' + key + ' but did not find it in the hit cache');
     }
   }
 
