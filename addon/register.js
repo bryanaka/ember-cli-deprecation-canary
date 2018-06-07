@@ -1,26 +1,10 @@
-import DeprecationTracker from './deprecation-tracker';
-import { QUnitAdapter } from './test-adapters';
+import DeprecationTracker from 'ember-cli-deprecation-canary/deprecation-tracker';
+import { generateAdapter } from 'ember-cli-deprecation-canary/test-adapters';
 import {
   assertHasDeprecationWorkflow,
   assertEmberDebug
-} from './utils';
+} from 'ember-cli-deprecation-canary/utils';
 
-const ADAPTER_REGISTRY = {
-  QUNIT: QUnitAdapter
-};
-
-function generateAdapter(adapterName, deprecationTracker) {
-  let Adapter;
-
-  if (typeof adapterName === 'string') {
-    const name = adapterName.toUpperCase();
-    Adapter = ADAPTER_REGISTRY[name];
-  } else {
-    Adapter = adapterName
-  }
-
-  return new Adapter(deprecationTracker);
-}
 
 export default function registerDeprecationCanary() {
   assertEmberDebug();
@@ -28,7 +12,7 @@ export default function registerDeprecationCanary() {
 
   const workflow = window.deprecationWorkflow.config.workflow;
   const deprecationTracker = new DeprecationTracker(workflow);
-  const adapter = generateAdapter('QUNIT', deprecationTracker);
+  const adapter = generateAdapter(deprecationTracker);
 
   adapter.register();
 }

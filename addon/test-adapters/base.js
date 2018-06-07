@@ -21,7 +21,7 @@ export default class BaseAdapter {
     @public
   */
   register() {
-    var reportingFn = this._getBoundReportingCallback();
+    const reportingFn = this._getBoundReportingCallback();
     this.registerReporterHook(reportingFn);
     this._registerHandler();
   }
@@ -48,7 +48,7 @@ export default class BaseAdapter {
     @protected
   */
   formatLog() {
-    var stats = this.deprecationTracker.generateDeprecationStats();
+    const stats = this.deprecationTracker.generateDeprecationStats();
     return deprecationPreamble + JSON.stringify(stats);
   }
 
@@ -78,7 +78,7 @@ export default class BaseAdapter {
     @private
   */
   _getBoundReportingCallback() {
-    var deprecationsLog = this.formatLog()
+    const deprecationsLog = this.formatLog()
     return this.log.bind(this, deprecationsLog);
   }
 }
